@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MealSync — Login</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="top"><span class="logo">MealSync</span><span class="who">Mess management, without the paper card</span></header>
+  <main>
+    <div class="auth-box">
+      <nav class="tabs"><button data-tab="login" class="active">Login</button><button data-tab="register">New registration</button></nav>
+
+      <section class="panel active card" id="login">
+        <form id="loginForm">
+          <label for="le">Email</label><input id="le" name="email" type="email" required autocomplete="username" />
+          <label for="lp">Password</label><input id="lp" name="password" type="password" required autocomplete="current-password" />
+          <p><button class="primary" type="submit">Login</button></p>
+        </form>
+        <p class="muted">Demo accounts (password <b>MealSync@123</b>): aman@, neha@ (day scholar), committee@, staff@, manager@, admin@ — all <code>@mealsync.local</code>.</p>
+      </section>
+
+      <section class="panel card" id="register">
+        <form id="registerForm">
+          <label for="rn">Full name</label><input id="rn" name="name" required />
+          <label for="rr">Roll number</label><input id="rr" name="roll_no" required />
+          <label for="re">University email</label><input id="re" name="email" type="email" required />
+          <label for="rph">Phone</label><input id="rph" name="phone" />
+          <label for="rp">Password (min 8 characters)</label><input id="rp" name="password" type="password" minlength="8" required />
+          <div class="row">
+            <div><label for="rd">Diet preference</label><select id="rd" name="diet_pref"><option value="veg">Veg</option><option value="nonveg">Non-veg</option></select></div>
+            <div><label for="rs">Residence</label><select id="rs" name="is_day_scholar"><option value="0">Hosteller</option><option value="1">Day scholar</option></select></div>
+          </div>
+          <p><button class="primary" type="submit">Register</button></p>
+          <p class="muted">The mess office approves new registrations before you can subscribe.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="/js/api.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

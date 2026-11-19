@@ -1,0 +1,65 @@
+/* MealSync — one small stylesheet for every page. */
+:root {
+  --bg: #f6f5f1; --card: #fff; --ink: #1d2320; --muted: #66706b; --line: #e3e1da;
+  --brand: #1f6f50; --brand-ink: #fff; --veg: #1e8a3e; --nonveg: #b3261e; --warn: #a86400; --ok: #1e8a3e; --bad: #b3261e;
+  --radius: 10px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.45; }
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 20px; background: var(--brand); color: var(--brand-ink); }
+header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .2px; }
+header.top .who { font-size: 13px; opacity: .9; }
+header.top button { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.5); }
+nav.tabs { display: flex; gap: 4px; padding: 8px 16px; background: var(--card); border-bottom: 1px solid var(--line); overflow-x: auto; }
+nav.tabs button { background: none; border: none; padding: 8px 12px; border-radius: 8px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+nav.tabs button.active { background: #e8f1ec; color: var(--brand); }
+main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+section.panel { display: none; }
+section.panel.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 12px; font-size: 17px; }
+.card h3 { margin: 16px 0 8px; font-size: 15px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.muted { color: var(--muted); font-size: 13px; }
+label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 4px; }
+input, select, textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: #fff; }
+textarea { min-height: 80px; resize: vertical; }
+button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+button.primary { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+button.danger { color: var(--bad); border-color: #e6b8b4; }
+button.small { padding: 4px 9px; font-size: 13px; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.row { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+.row > * { flex: 1; min-width: 120px; }
+.row > button { flex: 0 0 auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 12px; font-weight: 600; background: #eee; }
+.tag.veg { background: #e3f3e7; color: var(--veg); }
+.tag.nonveg { background: #fbe6e4; color: var(--nonveg); }
+.tag.ok, .tag.active, .tag.approved, .tag.resolved, .tag.paid, .tag.served { background: #e3f3e7; color: var(--ok); }
+.tag.pending, .tag.pending_payment, .tag.open, .tag.in_progress, .tag.cancel_requested { background: #fdf0db; color: var(--warn); }
+.tag.bad, .tag.rejected, .tag.cancelled, .tag.escalated, .tag.failed { background: #fbe6e4; color: var(--bad); }
+.stat { font-size: 28px; font-weight: 700; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; display: none; z-index: 10; max-width: 90vw; }
+.toast.show { display: block; }
+.toast.error { background: var(--bad); }
+.auth-box { max-width: 420px; margin: 40px auto; }
+.pass-box { text-align: center; }
+.pass-box #qr { display: inline-block; padding: 12px; background: #fff; border-radius: 12px; border: 1px solid var(--line); }
+.pass-box #qr img, .pass-box #qr svg { width: 240px; height: 240px; image-rendering: pixelated; }
+.countdown { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin: 12px auto; max-width: 264px; }
+.countdown div { height: 100%; background: var(--brand); transition: width 1s linear; }
+.meal-grid td button { width: 100%; }
+.scan-result { border-radius: 14px; padding: 22px; text-align: center; color: #fff; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.scan-result.idle { background: #c9cfcb; color: var(--ink); }
+.scan-result.ok { background: var(--ok); }
+.scan-result.bad { background: var(--bad); }
+.scan-result .big { font-size: 26px; font-weight: 800; }
+.scan-result .diet { margin-top: 8px; font-size: 20px; font-weight: 700; padding: 4px 14px; border-radius: 99px; background: rgba(255,255,255,.2); display: inline-block; }
+#reader { max-width: 420px; margin: 0 auto; }
+.bars div { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; }
+.bars span.bar { height: 14px; background: var(--brand); border-radius: 3px; display: inline-block; }
+@media (max-width: 600px) { main { padding: 12px 10px 60px; } .card { padding: 14px; } }
+header.top a { color: inherit; text-decoration: none; }

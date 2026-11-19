@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MealSync — Mess committee</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="top"><span class="logo">MealSync · Committee</span><span class="who"></span><span><a href="/student.html"><button class="small" type="button">Student view</button></a> <button id="logout" class="small">Logout</button></span></header>
+  <nav class="tabs">
+    <button data-tab="polls" class="active">Polls</button>
+    <button data-tab="menu">Menu</button>
+    <button data-tab="feedback">Ratings &amp; complaints</button>
+  </nav>
+  <main>
+    <section class="panel active" id="polls">
+      <div class="card"><h2>New poll</h2>
+        <label for="pq">Question</label><input id="pq" placeholder="Which item should replace Tuesday dinner?" />
+        <label for="po">Options (one per line)</label><textarea id="po" placeholder="Chole&#10;Paneer bhurji&#10;Keep as is"></textarea>
+        <label for="pc">Closes at</label><input id="pc" type="datetime-local" />
+        <p><button class="primary" id="createPoll">Publish poll</button></p></div>
+      <div class="card"><h2>All polls</h2><div id="pollList"></div></div>
+    </section>
+    <section class="panel" id="menu">
+      <div class="card"><h2>Edit a menu slot</h2>
+        <div class="row">
+          <div><label for="md">Day</label><select id="md"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></div>
+          <div><label for="mm">Meal</label><select id="mm"><option value="B">Breakfast</option><option value="L">Lunch</option><option value="S">Snacks</option><option value="D">Dinner</option></select></div>
+          <div><label for="mdi">Diet</label><select id="mdi"><option value="veg">Veg</option><option value="nonveg">Non-veg</option></select></div>
+        </div>
+        <label for="mi">Items</label><input id="mi" maxlength="300" />
+        <p><button class="primary" id="saveMenu">Save slot</button></p></div>
+      <div class="card"><h2>Weekly menu</h2><div id="weekMenu"></div></div>
+    </section>
+    <section class="panel" id="feedback">
+      <div class="card"><h2>Ratings (last 30 days)</h2><div id="ratings"></div></div>
+      <div class="card"><h2>Complaints escalated to the committee</h2><div id="escalated"></div></div>
+    </section>
+  </main>
+  <script src="/js/api.js"></script>
+  <script src="/js/menu-view.js"></script>
+  <script src="/js/committee.js"></script>
+</body>
+</html>

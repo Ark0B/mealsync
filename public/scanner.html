@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MealSync — Counter scanner</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="top"><span class="logo">MealSync · Counter</span><span class="who"></span><button id="logout" class="small">Logout</button></header>
+  <main>
+    <div class="grid">
+      <div class="card">
+        <h2>Scan pass</h2>
+        <div class="row">
+          <div><label for="meal">Serving</label><select id="meal"><option value="B">Breakfast</option><option value="L">Lunch</option><option value="S">Snacks</option><option value="D">Dinner</option></select></div>
+          <button class="primary" id="camBtn">Start camera</button>
+        </div>
+        <div id="reader"></div>
+        <label for="manual">Or type / paste the code under the student's QR</label>
+        <div class="row"><input id="manual" placeholder="MS1.…" /><button id="manualBtn">Check</button></div>
+      </div>
+      <div class="card">
+        <div id="result" class="scan-result idle"><div class="big">Ready</div><div>Scan a student's pass</div></div>
+        <h3>Today's headcount</h3>
+        <div id="headcount" class="muted">Loading…</div>
+      </div>
+    </div>
+    <div class="card"><h2>Recent scans</h2><div id="recent"></div></div>
+  </main>
+  <script src="/vendor/html5-qrcode.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/scanner.js"></script>
+</body>
+</html>

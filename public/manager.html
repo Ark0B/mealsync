@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MealSync — Mess office</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="top"><span class="logo">MealSync · Mess office</span><span class="who"></span><button id="logout" class="small">Logout</button></header>
+  <nav class="tabs">
+    <button data-tab="today" class="active">Today</button>
+    <button data-tab="approvals">Registrations</button>
+    <button data-tab="cancels">Cancellations</button>
+    <button data-tab="complaints">Complaints</button>
+    <button data-tab="reports">Reports</button>
+    <button data-tab="config">Prices &amp; rules</button>
+    <button data-tab="people">Staff &amp; committee</button>
+    <button data-tab="audit">Audit log</button>
+  </nav>
+  <main>
+    <section class="panel active" id="today">
+      <div class="card"><div class="row"><div><label for="hcDate">Headcount for</label><input type="date" id="hcDate" /></div><button id="hcBtn">Refresh</button>
+        <a href="/scanner.html"><button type="button">Open scanner</button></a></div></div>
+      <div class="grid" id="hcCards"></div>
+    </section>
+
+    <section class="panel" id="approvals"><div class="card"><h2>Pending registrations</h2><div id="pending"></div></div>
+      <div class="card"><h2>Find a student</h2><div class="row"><input id="q" placeholder="name, email or roll no" /><button id="qBtn">Search</button></div><div id="qRes"></div></div></section>
+
+    <section class="panel" id="cancels"><div class="card"><h2>Cancellation requests</h2><div id="cancelList"></div></div></section>
+
+    <section class="panel" id="complaints"><div class="card"><h2>Complaints</h2>
+      <div class="row"><div><label for="cFilter">Status</label><select id="cFilter"><option value="">All</option><option>open</option><option>in_progress</option><option>escalated</option><option>resolved</option></select></div></div>
+      <div id="complaintList"></div></div></section>
+
+    <section class="panel" id="reports">
+      <div class="card"><div class="row"><div><label for="rMonth">Month</label><input type="month" id="rMonth" /></div><button id="rBtn">Load</button><button id="csvBtn">Download meal log (Excel CSV)</button></div></div>
+      <div class="grid" id="summaryCards"></div>
+      <div class="card"><h2>Fraud signals</h2><p class="muted">Students with 3+ refused scans this month (second plate attempts, stale screenshots, no entitlement).</p><div id="fraud"></div></div>
+    </section>
+
+    <section class="panel" id="config">
+      <div class="card"><h2>Monthly plans</h2><div id="planList"></div></div>
+      <div class="card"><h2>Pay-per-meal prices</h2><div id="mealPrices"></div></div>
+      <div class="card"><h2>Rules</h2><div id="settings"></div><p><button class="primary" id="saveSettings">Save rules</button></p></div>
+    </section>
+
+    <section class="panel" id="people">
+      <div class="card"><h2>Create staff account</h2>
+        <div class="row"><input id="sName" placeholder="Name" /><input id="sEmail" placeholder="Email" /><input id="sPw" placeholder="Temporary password" type="password" />
+          <select id="sRole"><option value="staff">Counter staff</option><option value="manager">Manager (admin only)</option><option value="admin">Admin (admin only)</option></select>
+          <button class="primary" id="createStaff">Create</button></div></div>
+      <div class="card"><h2>Mess committee</h2><p class="muted">Search a student on the Registrations tab and toggle committee membership there.</p><div id="committeeList"></div></div>
+    </section>
+
+    <section class="panel" id="audit"><div class="card"><h2>Recent actions</h2><div id="auditList"></div></div></section>
+  </main>
+  <script src="/js/api.js"></script>
+  <script src="/js/manager.js"></script>
+</body>
+</html>

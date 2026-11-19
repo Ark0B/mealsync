@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MealSync — Student</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="top"><span class="logo">MealSync</span><span class="who"></span><button id="logout" class="small">Logout</button></header>
+  <nav class="tabs">
+    <button data-tab="pass" class="active">My pass</button>
+    <button data-tab="plan">Subscription</button>
+    <button data-tab="meals">Skip / late plate</button>
+    <button data-tab="tokens">Meal tokens</button>
+    <button data-tab="wallet">Wallet</button>
+    <button data-tab="feedback">Feedback</button>
+    <button data-tab="polls">Menu &amp; polls</button>
+    <button data-tab="committee" id="committeeTab" hidden>Committee ↗</button>
+  </nav>
+  <main>
+    <div class="card" id="pendingNotice" hidden><h2>Registration pending</h2><p>The mess office has not approved your registration yet. You can browse the menu meanwhile.</p></div>
+
+    <section class="panel active" id="pass">
+      <div class="card pass-box">
+        <h2>Meal pass</h2>
+        <div id="passState" class="muted"></div>
+        <div id="qr"></div>
+        <div class="countdown"><div id="bar" style="width:100%"></div></div>
+        <p class="muted">Show this at the counter. It changes every 30 seconds, so screenshots do not work.</p>
+        <p class="muted" id="passCode"></p>
+      </div>
+      <div class="card"><h2>Today's menu</h2><div id="todayMenu"></div></div>
+    </section>
+
+    <section class="panel" id="plan">
+      <div class="card"><h2>My subscriptions</h2><div id="mySubs"></div></div>
+      <div class="card">
+        <h2>Subscribe</h2>
+        <div class="row">
+          <div><label for="planSel">Plan</label><select id="planSel"></select></div>
+          <div><label for="monthSel">Month</label><select id="monthSel"></select></div>
+          <button class="primary" id="subscribeBtn">Subscribe &amp; pay</button>
+        </div>
+        <p class="muted">Joining mid-month? You only pay for the remaining days.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="meals">
+      <div class="card">
+        <h2>Next 7 days</h2>
+        <p class="muted">Skip a meal at least <b id="cutoffHours">4</b> hours before it starts and part of its cost is credited to your wallet. Running late? Ask for a late plate.</p>
+        <div id="mealGrid"></div>
+      </div>
+      <div class="card"><h2>Meals served to me</h2><div id="history"></div></div>
+    </section>
+
+    <section class="panel" id="tokens">
+      <div class="card">
+        <h2>Buy a single meal</h2>
+        <div class="row">
+          <div><label for="tDate">Date</label><input type="date" id="tDate" /></div>
+          <div><label for="tMeal">Meal</label><select id="tMeal"><option value="B">Breakfast</option><option value="L">Lunch</option><option value="S">Snacks</option><option value="D">Dinner</option></select></div>
+          <div><label for="tDiet">Diet</label><select id="tDiet"><option value="veg">Veg</option><option value="nonveg">Non-veg</option></select></div>
+          <div><label for="tPay">Pay with</label><select id="tPay"><option value="gateway">UPI / card</option><option value="wallet">Wallet balance</option></select></div>
+          <button class="primary" id="buyToken">Buy</button>
+        </div>
+        <div id="prices" class="muted"></div>
+      </div>
+      <div class="card"><h2>My tokens</h2><div id="myTokens"></div></div>
+    </section>
+
+    <section class="panel" id="wallet">
+      <div class="card"><h2>Wallet balance</h2><div class="stat" id="walletBal">—</div><p class="muted">Credits from skipped meals and cancellations. Spend them on meal tokens.</p></div>
+      <div class="card"><h2>Transactions</h2><div id="walletTx"></div></div>
+    </section>
+
+    <section class="panel" id="feedback">
+      <div class="grid">
+        <div class="card">
+          <h2>Rate a meal</h2>
+          <label for="rMeal">Meal you ate</label><select id="rMeal"></select>
+          <label for="rStars">Stars</label><select id="rStars"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
+          <label for="rComment">Comment (optional)</label><input id="rComment" maxlength="300" />
+          <p><button class="primary" id="rateBtn">Submit rating</button></p>
+        </div>
+        <div class="card">
+          <h2>Raise a complaint</h2>
+          <label for="cCat">Category</label>
+          <select id="cCat"><option value="food_quality">Food quality</option><option value="quantity">Quantity</option><option value="hygiene">Hygiene</option><option value="staff">Staff behaviour</option><option value="billing">Billing</option><option value="other">Other</option></select>
+          <label for="cDesc">What happened?</label><textarea id="cDesc" maxlength="2000"></textarea>
+          <div class="row"><div><label for="cDate">Date (optional)</label><input type="date" id="cDate" /></div><div><label for="cMeal">Meal (optional)</label><select id="cMeal"><option value="">—</option><option value="B">Breakfast</option><option value="L">Lunch</option><option value="S">Snacks</option><option value="D">Dinner</option></select></div></div>
+          <p><button class="primary" id="complainBtn">Submit complaint</button></p>
+        </div>
+      </div>
+      <div class="card"><h2>My complaints</h2><div id="myComplaints"></div></div>
+    </section>
+
+    <section class="panel" id="polls">
+      <div class="card"><h2>Committee polls</h2><div id="pollList"></div></div>
+      <div class="card"><h2>Weekly menu</h2><div id="weekMenu"></div></div>
+    </section>
+  </main>
+  <script src="/vendor/qrcode.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/menu-view.js"></script>
+  <script src="/js/student.js"></script>
+</body>
+</html>
