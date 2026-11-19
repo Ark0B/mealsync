@@ -1,0 +1,718 @@
+openapi: 3.0.3
+info:
+  title: MealSync API
+  version: 1.0.0
+  description: |
+    REST API for MealSync (mess management). All money is in **paise** (1/100 rupee).
+    Dates are `YYYY-MM-DD` in IST; timestamps are UTC `YYYY-MM-DD HH:MM:SS`.
+    Meals: `B` breakfast, `L` lunch, `S` snacks, `D` dinner.
+
+    Errors always look like `{ "error": { "code": "...", "message": "..." } }`.
+
+    **Try it:** call `POST /auth/login` (e.g. `aman@mealsync.local` / `MealSync@123`), copy the token,
+    click **Authorize** and paste it.
+servers:
+  - url: /api
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Student
+  - name: Payments
+  - name: Counter
+  - name: Feedback
+  - name: Committee
+  - name: Office
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
+    Month:
+      name: month
+      in: query
+      schema: { type: string, example: '2026-11' }
+  schemas:
+    Meal: { type: string, enum: [B, L, S, D] }
+    Diet: { type: string, enum: [veg, nonveg] }
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: VALIDATION }
+            message: { type: string }
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string, enum: [student, staff, manager, admin] }
+        is_committee: { type: integer, enum: [0, 1] }
+        roll_no: { type: string, nullable: true }
+        is_day_scholar: { type: integer, enum: [0, 1] }
+        diet_pref: { $ref: '#/components/schemas/Diet' }
+        status: { type: string, enum: [pending, approved, rejected, disabled] }
+    Session:
+      type: object
+      properties:
+        token: { type: string }
+        user: { $ref: '#/components/schemas/User' }
+    Plan:
+      type: object
+      properties:
+        id: { type: integer }
+        code: { type: string, example: HOSTEL_VEG }
+        name: { type: string }
+        diet: { $ref: '#/components/schemas/Diet' }
+        meals: { type: string, example: 'B,L,S,D' }
+        for_day_scholar: { type: integer }
+        price_paise: { type: integer, example: 360000 }
+        active: { type: integer }
+    Subscription:
+      type: object
+      properties:
+        id: { type: integer }
+        plan_id: { type: integer }
+        start_date: { type: string, format: date }
+        end_date: { type: string, format: date }
+        amount_paise: { type: integer }
+        status: { type: string, enum: [pending_payment, active, cancel_requested, cancelled] }
+        refund_paise: { type: integer }
+    Order:
+      type: object
+      properties:
+        orderId: { type: string, example: order_3f9a1c2b4d5e6f70 }
+        amountPaise: { type: integer }
+        currency: { type: string, example: INR }
+        mode: { type: string, example: mock }
+    GatewayResult:
+      type: object
+      required: [orderId, paymentId, signature]
+      properties:
+        orderId: { type: string }
+        paymentId: { type: string }
+        signature: { type: string, description: 'hex HMAC_SHA256(orderId + "|" + paymentId, gatewaySecret)' }
+    Token:
+      type: object
+      properties:
+        id: { type: integer }
+        meal_date: { type: string, format: date }
+        meal: { $ref: '#/components/schemas/Meal' }
+        diet: { $ref: '#/components/schemas/Diet' }
+        price_paise: { type: integer }
+        status: { type: string, enum: [pending_payment, active, used] }
+    MealRef:
+      type: object
+      required: [date, meal]
+      properties:
+        date: { type: string, format: date }
+        meal: { $ref: '#/components/schemas/Meal' }
+    ScanResult:
+      type: object
+      properties:
+        ok: { type: boolean }
+        meal: { $ref: '#/components/schemas/Meal' }
+        source: { type: string, enum: [subscription, token] }
+        diet: { $ref: '#/components/schemas/Diet' }
+        latePlate: { type: boolean }
+        student:
+          type: object
+          properties:
+            id: { type: integer }
+            name: { type: string }
+            roll_no: { type: string }
+    Complaint:
+      type: object
+      properties:
+        id: { type: integer }
+        category: { type: string, enum: [food_quality, quantity, hygiene, staff, billing, other] }
+        description: { type: string }
+        meal_date: { type: string, nullable: true }
+        meal: { type: string, nullable: true }
+        status: { type: string, enum: [open, in_progress, escalated, resolved] }
+        resolution: { type: string, nullable: true }
+    Poll:
+      type: object
+      properties:
+        id: { type: integer }
+        question: { type: string }
+        closes_at: { type: string }
+        status: { type: string, enum: [open, closed] }
+        open: { type: boolean }
+        totalVotes: { type: integer }
+        myVote: { type: integer, nullable: true }
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              label: { type: string }
+              votes: { type: integer }
+    MenuItem:
+      type: object
+      properties:
+        day_of_week: { type: integer, minimum: 0, maximum: 6 }
+        meal: { $ref: '#/components/schemas/Meal' }
+        diet: { $ref: '#/components/schemas/Diet' }
+        items: { type: string }
+    Headcount:
+      type: object
+      properties:
+        date: { type: string }
+        meals:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              subscribed: { type: integer }
+              skipped: { type: integer }
+              tokens: { type: integer }
+              latePlates: { type: integer }
+              served: { type: integer }
+              expected:
+                type: object
+                properties:
+                  veg: { type: integer }
+                  nonveg: { type: integer }
+                  total: { type: integer }
+  responses:
+    Error400: { description: Validation or business-rule error, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error401: { description: Not logged in, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error403: { description: Not allowed / not approved / not entitled, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error404: { description: Not found, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error409: { description: Duplicate or wrong state, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+paths:
+  /health:
+    get:
+      tags: [Auth]
+      security: []
+      summary: Liveness check
+      responses: { '200': { description: OK } }
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Student self-registration (status becomes pending)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, roll_no]
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string, minLength: 8 }
+                roll_no: { type: string }
+                phone: { type: string }
+                diet_pref: { $ref: '#/components/schemas/Diet' }
+                is_day_scholar: { type: boolean }
+      responses:
+        '201': { description: Registered, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        '400': { $ref: '#/components/responses/Error400' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /auth/login:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Log in (rate limited)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, example: aman@mealsync.local }
+                password: { type: string, example: MealSync@123 }
+      responses:
+        '200': { description: Logged in, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        '401': { $ref: '#/components/responses/Error401' }
+        '403': { $ref: '#/components/responses/Error403' }
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Current user
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Error401' }
+
+  /plans:
+    get:
+      tags: [Student]
+      summary: Plans available to the caller (students see only their residence type)
+      responses: { '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Plan' } } } } } }
+  /meal-prices:
+    get:
+      tags: [Student]
+      summary: Pay-per-meal token prices
+      responses: { '200': { description: OK } }
+  /subscriptions:
+    post:
+      tags: [Student]
+      summary: Subscribe for the current or next month (approved students)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [planId, month]
+              properties:
+                planId: { type: integer }
+                month: { type: string, example: '2026-12' }
+      responses:
+        '201':
+          description: Created, pending payment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription: { $ref: '#/components/schemas/Subscription' }
+                  order: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/Error400' }
+        '403': { $ref: '#/components/responses/Error403' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /subscriptions/mine:
+    get:
+      tags: [Student]
+      summary: My subscriptions
+      responses: { '200': { description: OK } }
+  /subscriptions/{id}:
+    delete:
+      tags: [Student]
+      summary: Discard an unpaid subscription
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses:
+        '204': { description: Deleted }
+        '409': { $ref: '#/components/responses/Error409' }
+  /subscriptions/{id}/cancel:
+    post:
+      tags: [Student]
+      summary: Request cancellation of an active subscription
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses:
+        '200': { description: Now cancel_requested }
+        '409': { $ref: '#/components/responses/Error409' }
+
+  /payments/mock-checkout/{orderId}:
+    post:
+      tags: [Payments]
+      summary: DEVELOPMENT ONLY — simulates the gateway checkout (PAYMENT_MODE=mock)
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Gateway result, content: { application/json: { schema: { $ref: '#/components/schemas/GatewayResult' } } } }
+        '404': { $ref: '#/components/responses/Error404' }
+  /payments/verify:
+    post:
+      tags: [Payments]
+      summary: Verify the gateway signature and activate the subscription / token (idempotent)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/GatewayResult' } } }
+      responses:
+        '200': { description: Paid }
+        '400': { $ref: '#/components/responses/Error400' }
+        '404': { $ref: '#/components/responses/Error404' }
+  /payments/mine:
+    get:
+      tags: [Payments]
+      summary: My payments
+      responses: { '200': { description: OK } }
+
+  /pass:
+    get:
+      tags: [Student]
+      summary: Current rotating meal pass (changes every 30 s)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string, example: MS1.5.59836320.uL6of3Px2VVOU_biSAo-6 }
+                  expiresIn: { type: integer, description: seconds until the next pass }
+        '403': { $ref: '#/components/responses/Error403' }
+
+  /skips:
+    post:
+      tags: [Student]
+      summary: Skip a meal before the cut-off; wallet is credited
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/MealRef' } } } }
+      responses:
+        '201': { description: Skipped (body includes credit_paise) }
+        '400': { $ref: '#/components/responses/Error400' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /skips/mine:
+    get: { tags: [Student], summary: My skips, responses: { '200': { description: OK } } }
+  /skips/{id}:
+    delete:
+      tags: [Student]
+      summary: Undo a skip before the cut-off (credit reversed)
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses:
+        '204': { description: Undone }
+        '400': { $ref: '#/components/responses/Error400' }
+  /late-plates:
+    post:
+      tags: [Student]
+      summary: Ask the mess to keep a plate (collect within the grace period)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/MealRef' } } } }
+      responses:
+        '201': { description: Requested }
+        '400': { $ref: '#/components/responses/Error400' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /late-plates/mine:
+    get: { tags: [Student], summary: My late plates, responses: { '200': { description: OK } } }
+  /meals/history:
+    get: { tags: [Student], summary: Meals served to me, responses: { '200': { description: OK } } }
+  /tokens:
+    post:
+      tags: [Student]
+      summary: Buy a single-meal token (gateway order or wallet)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [date, meal, diet]
+              properties:
+                date: { type: string, format: date }
+                meal: { $ref: '#/components/schemas/Meal' }
+                diet: { $ref: '#/components/schemas/Diet' }
+                payWith: { type: string, enum: [gateway, wallet], default: gateway }
+      responses:
+        '201':
+          description: Token (and an order when paying by gateway)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { $ref: '#/components/schemas/Token' }
+                  order: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/Error400' }
+        '402': { description: Not enough wallet balance }
+        '409': { $ref: '#/components/responses/Error409' }
+  /tokens/mine:
+    get: { tags: [Student], summary: My tokens, responses: { '200': { description: OK } } }
+  /tokens/{id}:
+    delete:
+      tags: [Student]
+      summary: Discard an unpaid token
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses: { '204': { description: Deleted } }
+  /wallet:
+    get:
+      tags: [Student]
+      summary: Wallet balance and transactions
+      responses: { '200': { description: OK } }
+
+  /scans:
+    post:
+      tags: [Counter]
+      summary: Verify a pass and record the meal (staff, manager, admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, meal]
+              properties:
+                token: { type: string }
+                meal: { $ref: '#/components/schemas/Meal' }
+      responses:
+        '200': { description: SERVE, content: { application/json: { schema: { $ref: '#/components/schemas/ScanResult' } } } }
+        '400': { description: 'INVALID_TOKEN or EXPIRED_TOKEN' }
+        '403': { description: 'ACCOUNT_INACTIVE, MEAL_SKIPPED, NO_ENTITLEMENT or OUTSIDE_MEAL_HOURS' }
+        '409': { description: 'ALREADY_SERVED (includes servedAt)' }
+  /scans/recent:
+    get: { tags: [Counter], summary: My recent scan attempts, responses: { '200': { description: OK } } }
+
+  /complaints:
+    post:
+      tags: [Feedback]
+      summary: File a complaint (student)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category, description]
+              properties:
+                category: { type: string, enum: [food_quality, quantity, hygiene, staff, billing, other] }
+                description: { type: string, minLength: 10, maxLength: 2000 }
+                meal_date: { type: string, format: date }
+                meal: { $ref: '#/components/schemas/Meal' }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Complaint' } } } }
+        '400': { $ref: '#/components/responses/Error400' }
+    get:
+      tags: [Feedback]
+      summary: All complaints (committee, manager, admin)
+      parameters:
+        - { name: status, in: query, schema: { type: string } }
+      responses: { '200': { description: OK } }
+  /complaints/mine:
+    get: { tags: [Feedback], summary: My complaints, responses: { '200': { description: OK } } }
+  /complaints/{id}:
+    patch:
+      tags: [Feedback]
+      summary: Change status (state machine; committee only on escalated)
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [in_progress, escalated, resolved] }
+                resolution: { type: string, description: required when resolving }
+      responses:
+        '200': { description: Updated }
+        '403': { $ref: '#/components/responses/Error403' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /ratings:
+    post:
+      tags: [Feedback]
+      summary: Rate a meal you were served (once)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/MealRef'
+                - type: object
+                  required: [stars]
+                  properties:
+                    stars: { type: integer, minimum: 1, maximum: 5 }
+                    comment: { type: string, maxLength: 300 }
+      responses:
+        '201': { description: Rated }
+        '403': { $ref: '#/components/responses/Error403' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /ratings/summary:
+    get:
+      tags: [Committee]
+      summary: Average stars per meal and lowest-rated meals
+      parameters:
+        - { name: days, in: query, schema: { type: integer, default: 30 } }
+      responses: { '200': { description: OK } }
+
+  /menu:
+    get:
+      tags: [Committee]
+      summary: Weekly menu
+      responses: { '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/MenuItem' } } } } } }
+    put:
+      tags: [Committee]
+      summary: Set one menu slot (committee, manager)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/MenuItem' } } } }
+      responses:
+        '200': { description: Updated week }
+        '403': { $ref: '#/components/responses/Error403' }
+  /menu/today:
+    get: { tags: [Committee], summary: "Today's menu (IST)", responses: { '200': { description: OK } } }
+  /polls:
+    get:
+      tags: [Committee]
+      summary: Polls with live counts and my vote
+      responses: { '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Poll' } } } } } }
+    post:
+      tags: [Committee]
+      summary: Create a poll (committee)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question, options, closes_at]
+              properties:
+                question: { type: string }
+                options: { type: array, minItems: 2, maxItems: 10, items: { type: string } }
+                closes_at: { type: string, format: date-time }
+      responses:
+        '201': { description: Created }
+        '400': { $ref: '#/components/responses/Error400' }
+  /polls/{id}:
+    get:
+      tags: [Committee]
+      summary: One poll
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses: { '200': { description: OK } }
+  /polls/{id}/vote:
+    post:
+      tags: [Committee]
+      summary: Vote once (approved students)
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [optionId], properties: { optionId: { type: integer } } } } }
+      responses:
+        '200': { description: Updated poll }
+        '409': { $ref: '#/components/responses/Error409' }
+  /polls/{id}/close:
+    post:
+      tags: [Committee]
+      summary: Close a poll early
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses: { '200': { description: Closed } }
+
+  /admin/users:
+    get:
+      tags: [Office]
+      summary: List / search users
+      parameters:
+        - { name: status, in: query, schema: { type: string } }
+        - { name: role, in: query, schema: { type: string } }
+        - { name: q, in: query, schema: { type: string } }
+      responses: { '200': { description: OK } }
+    post:
+      tags: [Office]
+      summary: Create staff (manager) or manager/admin (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, role]
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+                role: { type: string, enum: [staff, manager, admin] }
+      responses:
+        '201': { description: Created }
+        '403': { $ref: '#/components/responses/Error403' }
+  /admin/users/{id}/status:
+    patch:
+      tags: [Office]
+      summary: Approve / reject / disable a user
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { status: { type: string, enum: [approved, rejected, disabled] } } } } }
+      responses: { '200': { description: Updated } }
+  /admin/users/{id}/committee:
+    patch:
+      tags: [Office]
+      summary: Add or remove committee membership (students only)
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { is_committee: { type: boolean } } } } }
+      responses: { '200': { description: Updated } }
+  /admin/cancel-requests:
+    get: { tags: [Office], summary: Pending cancellation requests, responses: { '200': { description: OK } } }
+  /admin/subscriptions/{id}/cancel-decision:
+    post:
+      tags: [Office]
+      summary: Approve (refund to wallet) or reject a cancellation
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { approve: { type: boolean } } } } }
+      responses:
+        '200': { description: Decided }
+        '409': { $ref: '#/components/responses/Error409' }
+  /admin/plans:
+    get: { tags: [Office], summary: All plans, responses: { '200': { description: OK } } }
+  /admin/plans/{id}:
+    patch:
+      tags: [Office]
+      summary: Change plan price or active flag
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { price_paise: { type: integer }, active: { type: boolean } } } } }
+      responses: { '200': { description: Updated } }
+  /admin/meal-prices:
+    put:
+      tags: [Office]
+      summary: Set a token price
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meal: { $ref: '#/components/schemas/Meal' }
+                diet: { $ref: '#/components/schemas/Diet' }
+                price_paise: { type: integer }
+      responses: { '200': { description: Updated } }
+  /admin/settings:
+    get: { tags: [Office], summary: Business rules, responses: { '200': { description: OK } } }
+    patch:
+      tags: [Office]
+      summary: Update business rules (validated ranges)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skip_cutoff_hours: { type: number, minimum: 0, maximum: 48 }
+                skip_credit_rate: { type: number, minimum: 0, maximum: 1 }
+                max_skips_per_month: { type: number, minimum: 0, maximum: 124 }
+                cancel_refund_rate: { type: number, minimum: 0, maximum: 1 }
+                late_plate_grace_minutes: { type: number, minimum: 0, maximum: 180 }
+      responses:
+        '200': { description: Updated }
+        '400': { $ref: '#/components/responses/Error400' }
+  /admin/headcount:
+    get:
+      tags: [Office]
+      summary: Expected plates per meal (staff, committee, manager, admin)
+      parameters:
+        - { name: date, in: query, schema: { type: string, format: date } }
+      responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Headcount' } } } } }
+  /admin/reports/summary:
+    get:
+      tags: [Office]
+      summary: Monthly summary
+      parameters: [{ $ref: '#/components/parameters/Month' }]
+      responses: { '200': { description: OK } }
+  /admin/reports/fraud:
+    get:
+      tags: [Office]
+      summary: Students with repeated refused scans
+      parameters:
+        - { $ref: '#/components/parameters/Month' }
+        - { name: threshold, in: query, schema: { type: integer, default: 3 } }
+      responses: { '200': { description: OK } }
+  /admin/reports/meals.csv:
+    get:
+      tags: [Office]
+      summary: Meal log as CSV (opens in Excel)
+      parameters: [{ $ref: '#/components/parameters/Month' }]
+      responses: { '200': { description: CSV file, content: { text/csv: { schema: { type: string } } } } }
+  /admin/audit:
+    get: { tags: [Office], summary: Recent administrative actions, responses: { '200': { description: OK } } }
