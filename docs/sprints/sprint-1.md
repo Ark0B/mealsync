@@ -16,7 +16,7 @@
 | Plans, pro-rating, overlap rule | Tarun | `services/subscriptions.service.js`, `utils/pricing.js` |
 | Order + signature verification + mock gateway | Arkodyuti | `services/payments.service.js` |
 | Login/register page, subscription tab | Sania | `public/index.html`, `public/js/student.js` |
-| Tests: auth + subscription integration, pricing unit | Sania | `tests/integration/auth.test.js`, `subscriptions.test.js`, `tests/unit/pricing.test.js` |
+| Tests: auth + subscription integration, pricing unit | Arkodyuti | `tests/integration/auth.test.js`, `subscriptions.test.js`, `tests/unit/pricing.test.js` |
 
 ## Review (draft)
 Demo script: register `R-100` → log in as manager → approve → subscribe mid-month (amount checks out) → pay via mock gateway → status active → try a forged signature → refused.

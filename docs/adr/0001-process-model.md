@@ -1,7 +1,7 @@
 # ADR-0001: Incremental delivery with Scrum sprints
 
 - Status: Accepted
-- Deciders: whole team (proposed by Arkodyuti)
+- Deciders: whole team (proposed by Sania)
 - Context date: project start
 
 ## Context

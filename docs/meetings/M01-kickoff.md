@@ -1,6 +1,6 @@
 # M01 — Kick-off and role assignment
 
-**Status: DRAFT** · Date: ____ · Venue: ____ · Facilitator: Arkodyuti · Notes: Ananya
+**Status: DRAFT** · Date: ____ · Venue: ____ · Facilitator: Sania · Notes: Ananya
 Attendees: ☐ Arkodyuti ☐ Tarun ☐ Ananya ☐ Sania
 
 ## Agenda
@@ -15,7 +15,7 @@ Attendees: ☐ Arkodyuti ☐ Tarun ☐ Ananya ☐ Sania
 |---|---|---|
 | D1 | Topic: replace paper mess cards, registers, Forms and screenshot payments with a full software product | ☐ |
 | D2 | Product name: **MealSync** | ☐ |
-| D3 | Roles: Arkodyuti — Product & Project Lead, Software Architect · Tarun — Developer/Implementation Lead, DevOps/Config & Release · Ananya — Requirements Engineer/SRS Lead, System Analyst · Sania — QA/Test Engineer, UX/UI Designer | ☐ |
+| D3 | Roles: Sania — Product & Project Lead, UX/UI Designer · Arkodyuti — Software Architect/Design Lead, QA/Test Engineer · Tarun — Software Developer/Implementation Lead, DevOps/Configuration & Release Engineer · Ananya — Requirements Engineer/SRS Lead, System Analyst | ☐ |
 | D4 | Process: incremental delivery with one-week Scrum sprints after a Sprint-0 baseline (ADR-0001) | ☐ |
 | D5 | GitHub: `main` protected; feature branches `feat/<story-id>-short-name`; PRs reviewed by someone other than the author; CI must pass | ☐ |
 | D6 | Stand-ups async in the team chat (yesterday / today / blockers); planning Monday, review + retro Friday | ☐ |
@@ -25,7 +25,7 @@ Attendees: ☐ Arkodyuti ☐ Tarun ☐ Ananya ☐ Sania
 | Action | Owner | Due |
 |---|---|---|
 | Create the GitHub repo, protect `main`, add everyone | Tarun | |
-| Draft the charter and RACI | Arkodyuti | |
+| Draft the charter and RACI | Sania | |
 | Draft the survey; book an interview with the mess manager | Ananya | |
 | Book an interview with counter staff | Sania | |
 | Book a meeting with the mess committee | Tarun | |

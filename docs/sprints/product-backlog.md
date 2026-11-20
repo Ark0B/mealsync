@@ -1,6 +1,6 @@
 # Product backlog
 
-Owner: Arkodyuti (Product Lead), with Ananya (stories and acceptance criteria). Priority = MoSCoW from the SRS. Status reflects the repository at v1.0.0.
+Owner: Sania (Product & Project Lead), with Ananya (stories and acceptance criteria). Priority = MoSCoW from the SRS. Status reflects the repository at v1.0.0.
 
 | ID | User story | FR | Pri | Pts | Sprint | Status |
 |---|---|---|---|---|---|---|

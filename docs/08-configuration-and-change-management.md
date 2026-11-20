@@ -1,6 +1,6 @@
 # 08 · Configuration and change management
 
-Owner: Tarun (Configuration & Release Engineer), with Arkodyuti as CCB chair.
+Owner: Tarun (Configuration & Release Engineer), with Sania (Product & Project Lead) as CCB chair.
 
 ## 1. Configuration items (what is version-controlled)
 | Item | Location | Versioned by |
@@ -45,7 +45,7 @@ flowchart LR
   D -->|Reject| I[Record reason, close]
 ```
 
-**CCB:** Product Lead (chair, decides on priority), Architect (design impact), Developer (effort), QA (test impact), Requirements Engineer (SRS update). Quorum: 3 of 4.
+**CCB:** Product & Project Lead (chair, decides on priority), Architect / QA (design and test impact), Developer (effort), Requirements Engineer (SRS update). Quorum: 3 of 4.
 
 **Criteria:** value to stakeholders, effort vs remaining sprint capacity, risk, and whether it pushes out a Must requirement.
 

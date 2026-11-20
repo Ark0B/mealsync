@@ -1,6 +1,6 @@
 # ADR-0007: One MySQL schema; SQLite generated from it for development and tests
 
-- Status: Accepted · Deciders: Tarun, Sania
+- Status: Accepted · Deciders: Tarun, Arkodyuti
 
 ## Context
 Requiring every teammate and every test run to have a MySQL server slows development and makes tests flaky. But production is MySQL, and SQL dialect differences are a classic source of "works on my machine" bugs.

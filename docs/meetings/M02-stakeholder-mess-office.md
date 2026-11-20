@@ -1,6 +1,6 @@
 # M02 — Discovery interview: mess manager
 
-**Status: DRAFT** · Date: ____ · Interviewers: Ananya, Arkodyuti · Interviewee: ____ (mess manager)
+**Status: DRAFT** · Date: ____ · Interviewers: Ananya, Sania · Interviewee: ____ (mess manager)
 
 Use the guide in [`../01-discovery/interview-guides.md`](../01-discovery/interview-guides.md). Record **what was actually said**; do not paraphrase into the answer we hoped for.
 

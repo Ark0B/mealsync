@@ -15,7 +15,7 @@
 | Monthly summary, CSV export (formula-injection safe), fraud signals, audit log | Arkodyuti | `reports.service.js`, `audit.service.js` |
 | Manager dashboard, committee page | Sania | `public/manager.html`, `committee.html` |
 | OpenAPI spec + Swagger UI | Tarun | `docs/openapi.yaml` |
-| Tests: community + reports integration; coverage ≥ 80 % | Sania | `tests/integration/community.test.js`, `reports.test.js` |
+| Tests: community + reports integration; coverage ≥ 80 % | Arkodyuti | `tests/integration/community.test.js`, `reports.test.js` |
 | CR-002 (new plan as data) | Ananya → Tarun | `src/db/seedData.js` |
 
 ## Review (draft)

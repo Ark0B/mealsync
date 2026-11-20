@@ -14,7 +14,7 @@
 | Scan service (7 checks) | Tarun | `services/scans.service.js` |
 | Student pass tab (QR + countdown + manual code) | Sania | `public/js/student.js` |
 | Scanner page (camera, manual code, beep, big result) | Sania, Tarun | `public/scanner.html`, `public/js/scanner.js` |
-| Tests: pass token unit, scan integration (screenshot, forgery, double serve, window) | Sania | `tests/unit/passToken.test.js`, `tests/integration/scans.test.js` |
+| Tests: pass token unit, scan integration (screenshot, forgery, double serve, window) | Arkodyuti | `tests/unit/passToken.test.js`, `tests/integration/scans.test.js` |
 
 ## Review (draft)
 Demo: student pass on phone → staff scans → SERVE (VEG ONLY) → scan again → DO NOT SERVE, already served at hh:mm → wait 61 s with an old screenshot → expired.

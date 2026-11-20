@@ -1,6 +1,6 @@
 # 06 · Test plan
 
-Owner: Sania (QA / Test Engineer). Standard: structure based on IEEE 829.
+Owner: Arkodyuti (QA / Test Engineer). Standard: structure based on IEEE 829.
 
 ## 1. Objectives
 Show that every **Must** requirement in the [SRS](02-srs.md) behaves as specified, that the anti-fraud guarantees hold under attack-style inputs, and that the system works on the production database (MySQL), not only on SQLite.
@@ -64,4 +64,4 @@ Record: tester, date, pass/fail, time taken, comments → `07-test-report.md §5
 GitHub issues with the *Bug report* template. Severity: **Critical** (wrong food/money decision, security), **Major** (feature unusable), **Minor** (cosmetic). Every fixed bug gets a regression test.
 
 ## 8. Roles
-Sania owns the plan and the report; every developer writes tests for their own stories; reviewers check that tests exist before approving a PR.
+Arkodyuti owns the plan and the report; every developer writes tests for their own stories; reviewers check that tests exist before approving a PR.

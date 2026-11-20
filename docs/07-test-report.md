@@ -1,6 +1,6 @@
 # 07 · Test report — v1.0.0
 
-Owner: Sania. Generated from the Jest run on the release candidate (in-memory SQLite). CI repeats the same suite on MySQL 8 (`test-mysql` job). **Paste the CI run link here after the first green MySQL run:** ____
+Owner: Arkodyuti (QA / Test Engineer). Generated from the Jest run on the release candidate (in-memory SQLite). CI repeats the same suite on MySQL 8 (`test-mysql` job). **Paste the CI run link here after the first green MySQL run:** ____
 
 ## 1. Summary
 | Metric | Value |

@@ -1,6 +1,6 @@
 # M04 — Change Control Board #1
 
-**Status: DRAFT** · Date: ____ · Chair: Arkodyuti · Members: Tarun (impact on code), Ananya (impact on requirements), Sania (impact on tests)
+**Status: DRAFT** · Date: ____ · Chair: Sania · Members: Tarun (impact on code), Ananya (impact on requirements), Arkodyuti (impact on design and tests)
 
 Process: [08 · Configuration & change management](../08-configuration-and-change-management.md).
 

@@ -110,9 +110,9 @@ docs/                        the full software-engineering record (below)
 
 | Member | Primary roles |
 |---|---|
-| Arkodyuti Bhattacharyya | Product & Project Lead · Software Architect / Design Lead |
+| Arkodyuti Bhattacharyya | Software Architect / Design Lead · QA / Test Engineer |
 | Tarun | Software Developer / Implementation Lead · DevOps / Configuration & Release Engineer |
 | Ananya | Requirements Engineer / SRS Lead · System Analyst |
-| Sania | QA / Test Engineer · UX / UI Designer |
+| Sania | UX / UI Designer · Product & Project Lead |
 
 Software Engineering Project 2026, South Asian University. Licensed under MIT.

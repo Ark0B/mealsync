@@ -9,8 +9,8 @@
 |---|---|---|
 | As-is process + pain points | Ananya | `docs/01-discovery/as-is-analysis.md` |
 | Survey and interview guides; run them | Ananya, Sania, Tarun | `docs/01-discovery/*`, `findings.md` |
-| Project charter, RACI, risk register | Arkodyuti | `docs/00-project-charter.md` |
-| Process model decision | Arkodyuti | ADR-0001 |
+| Project charter, RACI, risk register | Sania | `docs/00-project-charter.md` |
+| Process model decision | Sania | ADR-0001 |
 | SRS v1.0 baseline | Ananya | `docs/02-srs.md` |
 | Use cases, DFD 0/1, domain model, ER | Ananya | `docs/03-analysis.md`, `docs/database.md` |
 | Architecture + stack ADRs | Arkodyuti | `docs/05-architecture.md`, ADR-0002/3/7/8 |

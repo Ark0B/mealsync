@@ -1,10 +1,10 @@
 # M03 — SRS baseline review
 
-**Status: DRAFT** · Date: ____ · Moderator: Arkodyuti · Author: Ananya · Reviewers: Tarun, Sania
+**Status: DRAFT** · Date: ____ · Moderator: Sania · Author: Ananya · Reviewers: Tarun, Arkodyuti
 
 ## Agenda
 1. Walk through SRS v1.0 section by section
-2. Check every requirement is *testable* (Sania) and *buildable this semester* (Tarun)
+2. Check every requirement is *testable* (Arkodyuti) and *buildable this semester* (Tarun)
 3. Agree priorities (MoSCoW)
 4. Baseline
 
@@ -29,4 +29,4 @@
 | Action | Owner | Due |
 |---|---|---|
 | Fix review comments, tag the baseline | Ananya | |
-| Create GitHub issues for US-01…US-28 | Arkodyuti | |
+| Create GitHub issues for US-01…US-28 | Sania | |

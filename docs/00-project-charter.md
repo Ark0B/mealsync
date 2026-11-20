@@ -58,18 +58,18 @@ Consequences:
 
 R = Responsible, A = Accountable, C = Consulted, I = Informed.
 
-| Activity | Arkodyuti (Lead + Architect) | Tarun (Dev + DevOps) | Ananya (Req + Analyst) | Sania (QA + UX) |
+| Activity | Sania (Project Lead + UX) | Arkodyuti (Architect + QA) | Tarun (Dev + DevOps) | Ananya (Req + Analyst) |
 |---|---|---|---|---|
-| Discovery (survey, interviews) | A | C | R | R |
-| SRS and backlog | A | C | R | C |
-| Analysis models (use case, DFD, ER) | C | C | R/A | I |
-| UI/UX wireframes and front end look | C | C | I | R/A |
-| Architecture and ADRs | R/A | C | I | C |
-| Backend implementation | C | R/A | I | C |
-| Front-end implementation | C | R | I | R |
-| Test plan, test cases, test report | C | C | C | R/A |
-| CI/CD, repo hygiene, releases | C | R/A | I | C |
-| Change control board | A | R | R | R |
+| Discovery (survey, interviews) | A | C | C | R |
+| SRS and backlog | A | C | C | R |
+| Analysis models (use case, DFD, ER) | I | C | C | R/A |
+| UI/UX wireframes and front-end look | R/A | C | C | I |
+| Architecture and ADRs | C | R/A | C | I |
+| Backend implementation | I | C | R/A | I |
+| Front-end implementation | R | C | R/A | I |
+| Test plan, test cases, test report | C | R/A | C | C |
+| CI/CD, repo hygiene, releases | I | C | R/A | I |
+| Change control board | A (chair) | R | R | R |
 | Sprint planning / review / retro | A (facilitator) | R | R | R |
 | Final pitch | A | R | R | R |
 

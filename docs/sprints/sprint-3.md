@@ -15,7 +15,7 @@
 | Tokens via gateway or wallet | Tarun | `services/tokens.service.js` |
 | Headcount (veg / non-veg split) | Arkodyuti | `services/reports.service.js` |
 | Skip grid, tokens tab, wallet tab, headcount on scanner | Sania | `public/js/student.js`, `scanner.js` |
-| Tests: meals integration, headcount numbers | Sania | `tests/integration/meals.test.js` |
+| Tests: meals integration, headcount numbers | Arkodyuti | `tests/integration/meals.test.js` |
 
 ## Review (draft)
 Demo: skip tomorrow's lunch → ₹18.00 credit → headcount for tomorrow's lunch drops by one → buy a dinner token with the credit as a day scholar → after-cutoff skip refused with the cut-off time.

@@ -20,7 +20,7 @@ SRS 1.0 has no late plates. The scanner refuses everyone outside the serving win
 | Code | `createLatePlate`, `myLatePlates`; scan window extended by `late_plate_grace_minutes` when a late plate exists; headcount shows late plates | Tarun, 3 h |
 | Settings | New rule `late_plate_grace_minutes` (default 60, range 0–180) | 0.5 h |
 | UI | "Late" button in the skip grid | Sania, 1 h |
-| Tests | Entitlement, skip conflict, duplicate, after-meal refusal, grace allows, grace expiry refuses | Sania, 2 h |
+| Tests | Entitlement, skip conflict, duplicate, after-meal refusal, grace allows, grace expiry refuses | Arkodyuti, 2 h |
 | Risk | Students might reserve every meal "just in case" → kitchen keeps food aside. Mitigation: headcount shows the late-plate count; can be limited later | — |
 
 **Estimate:** 3 story points. **Schedule impact:** fits Sprint 3 without dropping a Must story.

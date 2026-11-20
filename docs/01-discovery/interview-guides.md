@@ -2,7 +2,7 @@
 
 Record date, interviewer, and notes for each interview in `findings.md`. Ask permission before recording.
 
-## Mess manager (owner: Ananya, with Arkodyuti)
+## Mess manager (owner: Ananya, with Sania)
 1. Walk me through a new student's registration, start to finish. Where does it get stuck?
 2. How do you track who has paid for which month? Can we see the register/Excel format (blank)?
 3. How are cancellations and refunds handled today? What is the refund policy?
@@ -29,6 +29,6 @@ Record date, interviewer, and notes for each interview in `findings.md`. Ask per
 1. Which meals do you actually eat on campus? Would a lunch-only or lunch+snacks plan fit?
 2. How do you pay per meal today?
 
-## Other universities (optional, owner: Arkodyuti)
+## Other universities (optional, owner: Sania)
 1. How does your mess verify students? Do you use any software?
 2. What would stop your institution from adopting a tool like this?
